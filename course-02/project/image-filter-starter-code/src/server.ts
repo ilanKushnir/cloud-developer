@@ -34,10 +34,12 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           .send(`please pass a valid 'image_url' query param!`);
     }
 
-    const filteredImagePath = await filterImageFromURL(image_url);
+    const filteredImagePath: string = await filterImageFromURL(image_url);
 
     return res.status(200)
-        .sendFile(filteredImagePath);
+        .sendFile(filteredImagePath, async () => {
+          await deleteLocalFiles([filteredImagePath]);
+        });
   } );
   //! END @TODO1
 
