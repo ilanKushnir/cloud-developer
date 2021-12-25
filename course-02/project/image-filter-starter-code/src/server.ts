@@ -38,14 +38,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     try {
       filteredImagePath = await filterImageFromURL(image_url);
     } catch (err) {
-      console.log(err);
+      console.log('image processing error', err);
+      return res.status(422)
+          .send(`service was unable to process the given image.`);
     }
 
     return res.status(200)
         .sendFile(filteredImagePath, async () => {
           await deleteLocalFiles([filteredImagePath]);
         });
-  } );
+  });
   //! END @TODO1
 
   // Root Endpoint
